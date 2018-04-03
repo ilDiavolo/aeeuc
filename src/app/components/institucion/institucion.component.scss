@@ -1,0 +1,35 @@
+
+th{
+    border-bottom: 0 !important;
+}
+
+.leyend{
+    p{
+        margin-bottom: 0;
+    }
+}
+
+.breadcrumb-item{
+    a{
+        opacity: 0.7;        
+        &:hover{
+            cursor: pointer;
+            opacity: 1;
+        }
+    }    
+}
+
+.cursor{
+    cursor: pointer;
+}
+
+.routerLink{
+    text-decoration-line: none
+}
+
+
+.drop{
+    &:hover{
+        color: #dc3545;
+    }
+}

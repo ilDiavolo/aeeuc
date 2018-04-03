@@ -1,0 +1,189 @@
+
+<div class="container-fluid">   
+    <div class="row" 
+        [style.min-height.vh]="100">
+
+        <div class="col-12 align-self-start mb-5">
+            
+            <!-- MENU DE SESION -->
+            <div class="row">
+                <div class="col-12 p-0">
+                    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                        <div class="container">
+                            <a class="navbar-brand" [routerLink]="['/home']" >AEEUC</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav mr-auto">
+                                    <!-- <li class="nav-item active">
+                                        <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link">Link</a>
+                                    </li> -->
+                                                                
+                                </ul>
+        
+                                <form class="form-inline my-2 my-lg-0">
+                                    <!-- <span class="text-white" >Cerrar sesión</span> -->
+                                </form>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- HEADER CONTENIDO BASICO -->
+           
+            <div class="container">
+                <div class="row">                     
+                    <div class="col-12 d-flex mt-5 align-items-center">
+
+                        <div>
+                            <a [routerLink]="['/institucion', institucion_activa._id, dependencia_activa._id]"
+                                    class="routerLink  h4">
+                                                               
+                                <i class="fas fa-angle-left"></i>                               
+                                Regresar</a>
+                        </div>
+                        
+                        <h1 class="lighter  mx-auto">
+                            Ciclos de Carga 
+                        </h1> 
+                    </div>               
+                </div>
+            </div>
+
+            
+            <div class="container" >
+                <hr class="mt-2" >
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                        <div class="">
+                            <p class="m-0 lead">{{ institucion_activa.nombre }}</p>
+                            <p class="m-0">Dependencia: <strong>{{dependencia_activa.nombre}}</strong></p>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+            
+     
+
+            <div class="container">   
+                <div class="row align-items-center">
+                   
+                  <div class="col-8 border-right">
+                      <app-lineas 
+                          [lineChartData]="lineChartData"
+                          [lineChartLabels]="lineChartLabels">
+                      </app-lineas>
+                    </div>
+
+
+                    <div class="col-4 ">
+                    
+                       
+                            <h3 class="text-capitalize h5 text-center" >cargar data por lote</h3>
+                            
+                            <div>
+                                <form (ngSubmit)="leerArchivo(fileInput)" class="d-flex " >
+                
+                                        <div class="customFile " >
+                                            <input  type="file" #fileInput id="fileInput" (change)="fileChangeEvent(fileInput)" >
+                                            <i class="fas fa-upload cursor text-secondary "></i>                                
+                                            <label class="cursor" for="fileInput" id="customFileLabel" > Seleccione un Archivo </label>
+                                        </div>                                       
+                                        <button class="btn btn-sm rounded-0 btn-light ml-auto" (click)="resetLabelFile()"  type="reset" > <i class="fas fa-trash    "></i> </button>
+                                        <button class="btn btn-sm rounded-0 btn-secondary" type="submit" >subir</button>
+                                        
+                                    </form>
+                            </div>
+                        
+
+                        <hr>
+
+                        <h1 class="h5 mb-0 text-center text-capitalize " > definir intervalo de medición </h1>
+                        <p class="small text-center m-0" >Hora Militar <i class="fas fa-info-circle text-info cursor"></i> </p>
+                        <div class="row pb-3 pt-1">
+                        <div class="col-6 border-right">
+                            <div class="text-center text-capitalize ">desde</div>
+                            <ngb-timepicker [minuteStep]="30" size="small" [(ngModel)]="time1"></ngb-timepicker>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center text-capitalize ">hasta</div>
+                            <ngb-timepicker [minuteStep]="30" size="small" [(ngModel)]="time2"></ngb-timepicker>
+                        </div>
+                        </div>        
+
+                        <div class="d-flex justify-content-center  py-2 ">
+                        <button type="button" (click)="crearIntervalo()" >crear intervalo de tiempo</button>
+                        </div>
+                        
+                        <!-- <hr> -->
+
+                    </div>
+                  
+                    <div class="col-12 mt-5">
+                        
+                        <div class="container">
+                            <div class="row justify-content-center">
+
+                                <form (ngSubmit)="guardarGrafica()" 
+                                    id="cicloForm" 
+                                    [formGroup]="fomulario_data_clicos"
+                                    class="w-100" >
+
+                                    <ul formArrayName="fila" class=" list-unstyled d-flex flex-wrap" >
+
+                                        <li class="col-lg-2 col-md-3 col-sm-4 px-0 " 
+                                            *ngFor="let item of intervalo_de_etiquetas; let i=index" >
+                                            <div class="form-group text-center">
+                                                <label for=""  > {{ item | horaMilitar }} </label>
+                                                <input type="number" [formControlName]='i' class="col-8">
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+
+                                    <!-- <button type="submit" > guardar data</button> -->
+
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div *ngIf="verFormCiclos" class="text-center" >
+                        <button type="submit"               
+                        class="cursor" form="cicloForm" >Guardar Ciclo de Carga</button>
+                        </div> 
+                        
+                        <hr>                    
+                    
+                        <div class="" style="height: 15px">                    
+                            
+                            <ngb-alert class="d-flex justify-content-center animated fadeIn text-center "
+                                *ngIf="successMessage" 
+                                [dismissible]="false" type="success" >  
+                            Guardado Exitosamente! 
+                            </ngb-alert>                    
+                            
+                        </div>
+                        
+                    </div>
+                  
+                </div>
+            </div>
+            
+        </div>
+
+        <footer class="col-12 align-self-end bg-dark">  
+            <p class="text-light text-center p-1 mb-0">
+                Manuel Pinto <i class="far fa-copyright"></i> 2018
+            </p> 
+        </footer>
+    </div>        
+</div>

@@ -1,0 +1,137 @@
+<div class="container-fluid">   
+    <div class="row" [style.min-height.vh]="100" >
+        <div class="col-12 align-self-start">
+            
+            <!-- MENU DE SESION -->
+            <div class="row">
+                <div class="col-12 p-0">
+                    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                        <div class="container">
+                            <a class="navbar-brand" [routerLink]="['/home']" >AEEUC</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav mr-auto">
+                                    <!-- <li class="nav-item active">
+                                        <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link">Link</a>
+                                    </li>
+                                                              -->
+                                </ul>
+        
+                                <form class="form-inline my-2 my-lg-0">
+                                    <!-- <span class="text-white" >Cerrar sesión</span> -->
+                                </form>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- HEADER CONTENIDO BASICO -->
+            <div class="row"> 
+                <div class=" col-12 jumbotron text-uppercase text-center">
+                    contenido basico de la aplicacion
+                </div>
+             </div>
+
+            <div class="row ">
+                <div class="col-12 display-4 text-center text-uppercase">
+                    instituciones
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="container">
+                <ul class="list-unstyled d-flex flex-wrap">
+                    <li *ngFor="let item of instituciones"
+                        class="px-2" [style.margin-bottom.rem]="1.25" >
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.nombre }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ item.tipo }}</h6>
+                                <p class="card-text">
+                                        {{ item.descripcion }}
+                                </p>
+                                <button                                 
+                                    [routerLink]="['/institucion', item._id]"                                   
+                                    type="button" class="w-100 rounded-0 cursor btn btn-primary" >ENTRAR</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="px-2" [style.margin-bottom.em]="1.25" >
+                        <div class="card " style="width: 18rem;">
+                            <div class="card-body text-center p-4 d-flex flex-column justify-content-center align-items-center ">
+                                <div class="cursor" (click)="openModal(addNewInstitucion)" >                                    
+                                    <i class="fas fa-plus-circle fa-4x "></i>                                
+                                    <h5 class="card-title m-2 text-capitalize">agregar institución</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    
+                </ul>
+            </div>
+
+            
+        </div>
+        <footer class="col-12 align-self-end bg-dark">  
+            <p class="text-light text-center p-1 mb-0">
+                Manuel Pinto <i class="far fa-copyright"></i> 2018
+            </p> 
+        </footer>
+    </div>        
+</div>
+
+
+
+<ng-template #addNewInstitucion let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+        <h4 class="modal-title">Agregar Institución</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="modal-body">
+        <form [formGroup]="formInstitucion" (ngSubmit)="addInstitucion()" ngNativeValidate >
+            
+
+            <div class="form-group">
+                <label for="nombre">Institución</label>
+                <input type="text" formControlName="nombre" class="form-control" placeholder="Nombre" required  >
+            </div>
+            <div class="form-group">
+                <label for="tipo">Tipo</label>
+                <input type="text" formControlName="tipo" class="form-control" placeholder="Tipo"  required>
+            </div>
+            <div class="form-group">
+                <label for="rif">RIF</label>
+                <input type="text" formControlName="rif" class="form-control" placeholder="Rif" required >
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripcion</label>
+                <textarea formControlName="descripcion" class="form-control" cols="30" rows="5" required></textarea>                
+            </div>
+
+            
+            <div class="d-flex justify-content-end">
+                <div>
+                    <button type="button" (click)="d('Cross click')" class=" ">CANCELAR</button>
+                    <button type="submit" class="  ">AGREGAR INSTITUCIÓN</button>
+                </div>
+            </div>                 
+
+        </form>
+    </div>
+ 
+</ng-template>

@@ -1,0 +1,389 @@
+
+<div class="container-fluid">   
+    <div class="row" 
+        [style.min-height.vh]="100">
+
+        <div class="col-12 align-self-start mb-5">
+            
+            <!-- MENU DE SESION -->
+            <div class="row">
+                <div class="col-12 p-0">
+                    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                        <div class="container">
+                            <a class="navbar-brand" [routerLink]="['/home']" >AEEUC</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav mr-auto">
+                                    <!-- <li class="nav-item active">
+                                        <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link">Link</a>
+                                    </li> -->
+                                                                
+                                </ul>
+        
+                                <form class="form-inline my-2 my-lg-0">
+                                    <!-- <span class="text-white" >Cerrar sesión</span> -->
+                                </form>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- HEADER CONTENIDO BASICO -->
+           
+            <div class="container">
+                <div class="row">                     
+                    <div class="col-12 d-flex mt-5 align-items-center">
+
+                        <div>
+                            <a [routerLink]="['/institucion', institucion_activa._id, dependencia_activa._id]"
+                                    class="routerLink  h4">
+                                                               
+                                <i class="fas fa-angle-left"></i>                               
+                                Regresar</a>
+                        </div>
+                        
+                        <h1 class="lighter  mx-auto">
+                            Censo de Carga 
+                        </h1> 
+                    </div>               
+                </div>
+            </div>
+
+            
+            <div class="container" >
+                <hr class="mt-2" >
+                <div class="row">
+                    <div class="col-12 d-flex align-items-center mb-2">
+                        <div class="">
+                            <p class="m-0 lead">{{ institucion_activa.nombre }}</p>
+                            <p class="m-0">Dependencia: <strong>{{dependencia_activa.nombre}}</strong></p>
+                        </div>
+                        <span class="ml-auto" >
+                            <button class="cursor" 
+                            [ngbPopover]="addtypeCarga"                            
+                            triggers="mouseenter:mouseleave"
+                            (click)="abrirModal(addNewTypeCarga)">
+                            <i class="fas fa-plus    "></i> Nuevo Tipo De Carga
+                        </button>
+                        </span>              
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #addtypeCarga> <small class="text-capitalize" >agrega un nuevo tipo de carga</small> </ng-template>
+            
+            
+            <div class="container">   
+                <div class="row">
+                   
+                    <div class="col-md-12  ">
+                        <form class="w-100" id="censoForm" [formGroup]="censoDeCarga" (ngSubmit)="guardarCambios()" ngNativeValidate >
+                            
+                            <table class="table m-0 bg-light border ">
+                        
+                                <thead>        
+                                    <tr class=" ">
+                                        <th scope="col">#</th>
+                                        <th scope="col">CATEGORIA</th>
+                                        <th scope="col">CARGA</th>
+                                        <th class="w-5em" scope="col">N°</th>
+                                        <th class="" scope="col" [style.width.em]="7" >PW</th>
+                                        <th class="w-5em" scope="col">FD </th>
+                                        <th class="w-5em" scope="col">HD</th>
+                                        <th class="w-5em" scope="col">DS</th>
+                                        <th class="w-5em" scope="col">HS</th>
+                                        <th class="w-5em" scope="col">CS</th>
+                                        <th class="w-5em" scope="col"></th>
+                                        
+                                    </tr>    
+                                </thead>
+                        
+                                <tbody class="small" formArrayName="fila" (change)="actTotales()" >
+                        
+                                    <tr *ngFor="let item of vector; let i = index" [formGroupName]="i" >
+                        
+                                        <td class="align-middle px-3" > {{ i+1 }} </td>
+                        
+                                        <td class="align-middle">
+                                            <div class="form-group m-0">
+                        
+                                                <select (change)="cambio(i)" required
+                                                        [ngClass]="{ 'invalido' : item.controls['categoria'].invalid  }"
+                                                        class="custom-select" formControlName="categoria">
+                                                    <option value="">selecione una categoria</option>
+                                                    <option *ngFor="let c of tipoCarga; let z = index"  
+                                                    [value]="c.categoria"> {{ c.categoria  }} </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                        
+                                        <td class="align-middle" >
+                                            <div class="form-group m-0">
+                                                <select class="custom-select" required 
+                                                        [ngClass]="{ 'invalido' : item.controls['nombre'].invalid  }"        
+                                                        formControlName="nombre" >
+                                                    <option value="" >selecione una carga</option>
+                                                    <option *ngFor="let x of matrix[i]; let y = index"  
+                                                    [value]="x"> {{ x }} </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                        
+                                        <!-- N° de cargas -->
+                                        <td class="align-middle">
+                        
+                                            <div class="form-group m-0">
+                                                <input  type="number"
+
+                                                        min="1"
+                                                        step="1"
+                                                        required
+
+                                                        [ngClass]="{ 'invalido' : item.controls['numero'].invalid  }"
+                                                        
+                                                        oninput="setCustomValidity('')"
+                                                        oninvalid="setCustomValidity('El valor debe ser mayor a 0')" 
+                                                        
+                                                        class="form-control w-5em"
+                                                        formControlName="numero"  >
+                                            </div>
+                                        </td>
+                        
+                                        <!-- Potencia W -->
+                                        <td class="align-middle">
+                                            <div class="form-group m-0">
+                                                <input  type="number"
+                                                
+                                                        required
+
+                                                        [ngClass]="{ 'invalido' : item.controls['potencia'].invalid  }"
+                                                        [style.width.em]="7"
+                                                    
+                                                        class="form-control"
+                                                        formControlName="potencia" >
+                                            </div>
+                                        </td>
+                        
+                                        <!-- Factor Demanda FD -->
+                                        <td class="align-middle w-5em"> 
+                                            <input 
+                                                type="number"
+                                                required
+                                                min="0"
+                                                max="1"
+                                                [ngClass]="{ 'invalido' : item.controls['fd'].invalid  }"
+                                                
+                                                oninput="setCustomValidity('')"
+                                                oninvalid="setCustomValidity('El valor debe estar comprendido entre 0 y 1')"                                                    
+                                                
+                                                step="0.1" class="form-control w-5em"
+                                                formControlName="fd"  >
+                                        </td>
+                                        
+                                        <!-- Horas de uso diario HD -->
+                                        <td class="align-middle">
+                                            <div class="form-group m-0">
+                                                <input  type="number"
+                                                        required
+                                                        min="1"
+                                                        max="24"
+                                                        step="1" 
+                                                        [ngClass]="{ 'invalido' : item.controls['horasDia'].invalid  }"
+                                                        
+                                                        oninput="setCustomValidity('')"
+                                                        oninvalid="setCustomValidity('El valor debe estar comprendido entre 1 y 24')"                                                        
+                                                        
+                                                        class="form-control w-5em"
+                                                        formControlName="horasDia" > 
+                                            </div>                                
+                                        </td>
+                                        
+                                        
+                                        <!-- Dias de uso a la semanal DS -->
+                                        <td class="align-middle"  >                    
+                                            <div class="form-group m-0 text-center" >
+                                                <input 
+                                                    type="number" 
+                                                    required
+                                                    class="form-control w-5em"
+                                                    min="1"
+                                                    max="7"
+                                                    [ngClass]="{ 'invalido' : item.controls['diaSemana'].invalid  }"
+
+                                                    oninput="setCustomValidity('')"
+                                                    oninvalid="setCustomValidity('El valor debe estar comprendido entre 1 y 7')"                                                    
+                                                    
+                                                    formControlName="diaSemana" >
+                                                    <!-- <span *ngIf="item.controls['diaSemana'].invalid" >valor invalido</span>                    -->
+                                            </div>     
+                        
+                                        <!-- Horas de uso semanal HS -->
+                                        
+                                        <td class="align-middle w-5em">
+                                            {{ item.controls['horasDia'].value * item.controls['diaSemana'].value }}
+                                        </td>
+                                        
+                                        <!-- Cosumo semanal -->
+                                        <td class="align-middle w-5em">
+                                                {{ 
+                                                    item.controls['numero'].value * 
+                                                    item.controls['potencia'].value * 
+                                                    item.controls['fd'].value * 
+                                                    item.controls['horasDia'].value * 
+                                                    item.controls['diaSemana'].value | number:'1.0-3'
+                                                }}
+                                        </td>
+                        
+                                        <td class="align-middle px-0">
+                                            <button type="button" 
+                                                    class="cursor"
+                                                    (click)="eliminarCarga(i)">
+                                            <i class="fas fa-eraser"  ></i>
+                                            </button>
+                                        </td>
+                        
+                                    </tr>
+                                
+                                </tbody>
+                                
+                            </table>
+
+                            <button 
+                            type="button"
+                            class="cursor my-3"    
+                            (click)="addCarga()">
+                                    <i class="fas fa-plus-circle " > </i> 
+                                    <span class="px-1 text-capitalize">añadir fila</span>
+                            </button>
+                            
+                        </form> 
+                                                
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row"> 
+                <div class=" col-12 jumbotron "  >
+
+                    <div class="container">
+                        <div class="row" >
+                            <div class="col-6 small row leyend " >
+                                <div class="col-6 ">
+                                    <p><strong>N°</strong> : Numero de Cargas </p>
+                                    <p><strong>PW</strong> : Potencia en Watios </p>
+                                    <p><strong>FD</strong> : Factor de Demanda </p>
+                                    <p><strong>HD</strong> : Horas de Uso Diario </p>
+                                </div>
+                                <div class="col-6">
+                                    <p><strong>DS</strong> : Dias de Uso a la Semana </p>
+                                    <p><strong>HS</strong> : Horas de Uso Semanal </p>
+                                    <p><strong>CS</strong> : Consumo Semanal </p>
+                                </div>
+                            </div>
+                            <div class="col-6 leyend small border-left pl-4" >
+    
+                                <div class="d-flex">
+                                    <p class="mr-auto" >Total de Cargas Conectadas: </p>
+                                    <p> <strong> {{ total_cargas_conectadas }} </strong>W </p>
+                                </div>
+                                <div class="d-flex">
+                                    <p class="mr-auto" >Total Wh por Semana: </p>
+                                    <p> <strong> {{ total_wh_por_semanas | number:'1.0-3' }}  </strong>W </p>
+                                </div>
+                                <div class="d-flex">
+                                    <p class="mr-auto" >Total Wh por mes: </p>
+                                    <p> <strong> {{ total_wh_por_semanas * 4.3 | number:'1.0-3' }} </strong>W </p>
+                                </div>
+                                <div class="d-flex">
+                                    <p class="mr-auto" >Total Kwh por mes: </p>
+                                    <p> <strong>{{(total_wh_por_semanas * 4.3)/1000 | number:'1.0-3' }} </strong>Kwh </p>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="text-center" >
+                <button type="submit"               
+                class="cursor" form="censoForm" >Guardar Censo</button>
+            </div> 
+            
+            <hr>
+            
+            
+            <div class="" style="height: 15px">
+             
+                
+                <ngb-alert class="d-flex justify-content-center animated fadeIn text-center "
+                    *ngIf="successMessage" 
+                    [dismissible]="false" type="success" >  
+                Guardado Exitosamente! 
+                </ngb-alert>
+                
+                
+            </div>
+         
+
+
+        </div>
+        <footer class="col-12 align-self-end bg-dark">  
+            <p class="text-light text-center p-1 mb-0">
+                Manuel Pinto <i class="far fa-copyright"></i> 2018
+            </p> 
+        </footer>
+    </div>        
+</div>
+
+
+
+
+
+<ng-template #addNewTypeCarga let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+        <h4 class="modal-title">Agregar Carga</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="modal-body">
+        <form [formGroup]="newCarga" (ngSubmit)="guardarNewCarga()" ngNativeValidate >
+
+            <div class="form-group "> 
+                <label for="nombre">Categoria</label>                       
+                <select required class="custom-select" formControlName="tipo">
+                    <option value="">selecione una categoria</option>
+                    <option *ngFor="let item of tipoCarga"  
+                    [value]="item.categoria"> {{ item.categoria  }} </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" formControlName="nombre" class="form-control"  >
+            </div>
+
+            <!-- <button type="submit" >Guardar</button>  -->
+            <div class="d-flex justify-content-end">
+                <div>
+                    <button type="button" (click)="d('Cross click')" class=" ">CANCELAR</button>
+                    <button type="submit" class="  ">AGREGAR CARGA</button>
+                </div>
+            </div>                 
+
+        </form>
+    </div>
+ 
+</ng-template>
