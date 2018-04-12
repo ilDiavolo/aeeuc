@@ -24,11 +24,12 @@ import { Institucion } from '../../classes/institucion';
 export class PlanComponent implements OnInit {
 
   
+  userActive = ''
   // ===========================  DATA DE ENTRADA QUE DEBO CARGAR  ============================
   
   // 1.- Data deL Plan
   institucion_activa:Institucion=new Institucion('','','','','')
-  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 , '' , '' , '' , [],[],[],[],[] )
+  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0, [] , '' , '' , '' , [],[],[],[],[] )
 
   
   // 2.- Data de los Select
@@ -70,26 +71,27 @@ export class PlanComponent implements OnInit {
     private dependenciaService:DependenciaService,
     private institucionService:InstitucionService ){   
     
+      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
     
-    activatedRoute.params.subscribe(params=>{
+      activatedRoute.params.subscribe(params=>{
 
-      this.dependenciaService.getDependencia(params['id_dependecia']).subscribe((res:any)=>{        
-        this.dependencia_activa = res.data
-        
-        tipoCargaService.getCargas().subscribe((res:any)=>{
-          this.tipoCarga = res.data
-    
-          // Esta instruccion carga la data de los segundos select
-          for (let i = 0; i < this.dependencia_activa.plan.length; i++) {   
-            for (let j = 0; j < this.tipoCarga.length; j++) {
-              if (this.tipoCarga[j].categoria===this.dependencia_activa.plan[i].categoria) {
-                this.matrix[i] = this.tipoCarga[j].items
-              }        
+        this.dependenciaService.getDependencia(params['id_dependecia']).subscribe((res:any)=>{        
+          this.dependencia_activa = res.data
+          
+          tipoCargaService.getCargas().subscribe((res:any)=>{
+            this.tipoCarga = res.data
+      
+            // Esta instruccion carga la data de los segundos select
+            for (let i = 0; i < this.dependencia_activa.plan.length; i++) {   
+              for (let j = 0; j < this.tipoCarga.length; j++) {
+                if (this.tipoCarga[j].categoria===this.dependencia_activa.plan[i].categoria) {
+                  this.matrix[i] = this.tipoCarga[j].items
+                }        
+              }
             }
-          }
-    
-        })
-        
+      
+          })
+          
         // console.log(this.plan)
 
         this.institucionService.getInstitucion(this.dependencia_activa.id_institucion).subscribe((res:any)=>{        
@@ -140,11 +142,11 @@ export class PlanComponent implements OnInit {
                 Validators.required,
                 this.noVacio
               ]),
-              'numero': new FormControl(element.numero, Validators.min(1)),
-              'potencia': new FormControl(element.potencia),
-              'fd': new FormControl(element.fd, [ Validators.min(0), Validators.max(1) ]),
-              'horasDia': new FormControl(element.horasDia, [ Validators.min(1), Validators.max(24) ]),
-              'diaSemana': new FormControl(element.diaSemana, [ Validators.min(1), Validators.max(7) ])
+              'numero': new FormControl(element.numero, [Validators.min(1), Validators.required]),
+              'potencia': new FormControl(element.potencia, [Validators.min(0), Validators.required]),
+              'fd': new FormControl(element.fd, [ Validators.min(0), Validators.max(1), Validators.required ]),
+              'horasDia': new FormControl(element.horasDia, [ Validators.min(1), Validators.max(24), Validators.required ]),
+              'diaSemana': new FormControl(element.diaSemana, [ Validators.min(1), Validators.max(7), Validators.required ])
             })
           )
 
@@ -200,11 +202,11 @@ export class PlanComponent implements OnInit {
           Validators.required,
           this.noVacio
         ]),
-        'numero': new FormControl(1, Validators.min(1)),
-        'potencia': new FormControl(1),
-        'fd': new FormControl(1, [ Validators.min(0), Validators.max(1) ]),
-        'horasDia': new FormControl(1, [ Validators.min(1), Validators.max(24) ]),
-        'diaSemana': new FormControl(1, [ Validators.min(1), Validators.max(7) ])
+        'numero': new FormControl(1,    [ Validators.min(1), Validators.required]),
+        'potencia': new FormControl(1,  [ Validators.min(0), Validators.required ]),
+        'fd': new FormControl(1,        [ Validators.min(0), Validators.max(1), Validators.required ]),
+        'horasDia': new FormControl(1,  [ Validators.min(1), Validators.max(24), Validators.required ]),
+        'diaSemana': new FormControl(1, [ Validators.min(1), Validators.max(7), Validators.required ])
       })
     )
 
@@ -261,6 +263,10 @@ export class PlanComponent implements OnInit {
   }
 
   abrirModal(content){     
+    this.newCarga = this.fb.group({
+      tipo:['', Validators.required],
+      nombre:['', Validators.required]
+    })
     // this.modal = this.modalService.open(newUserModal, { backdrop:'static' , keyboard:false, size: 'lg'} )
     this.modal = this.modalService.open(content, { backdrop:'static' , keyboard:false, windowClass:'newUser-modal', size:'sm'} )
   }
@@ -349,6 +355,10 @@ export class PlanComponent implements OnInit {
   }
 
 
+  session(useractive){
+    this.userActive = useractive
+  }
+  
 
 
 

@@ -24,11 +24,12 @@ import { Institucion } from '../../classes/institucion';
 })
 export class CensoComponent implements OnInit {
   
+  userActive = ''
   // ===========================  DATA DE ENTRADA QUE DEBO CARGAR  ============================
   
   // 1.- Data deL Censo
   institucion_activa:Institucion=new Institucion('','','','','')
-  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 , '' , '' , '' , [],[],[],[],[] )
+  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 ,[], '' , '' , '' , [],[],[],[],[] )
 
   
   // 2.- Data de los Select
@@ -68,6 +69,7 @@ export class CensoComponent implements OnInit {
     private dependenciaService:DependenciaService,
     private institucionService:InstitucionService ){   
     
+      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
     
     activatedRoute.params.subscribe(params=>{
 
@@ -141,11 +143,11 @@ export class CensoComponent implements OnInit {
                 Validators.required,
                 this.noVacio
               ]),
-              'numero': new FormControl(element.numero, Validators.min(1)),
-              'potencia': new FormControl(element.potencia),
-              'fd': new FormControl(element.fd, [ Validators.min(0), Validators.max(1) ]),
-              'horasDia': new FormControl(element.horasDia, [ Validators.min(1), Validators.max(24) ]),
-              'diaSemana': new FormControl(element.diaSemana, [ Validators.min(1), Validators.max(7) ])
+              'numero': new FormControl(element.numero, [Validators.min(1), Validators.required]),
+              'potencia': new FormControl(element.potencia, [Validators.min(0), Validators.required]),
+              'fd': new FormControl(element.fd, [ Validators.min(0), Validators.max(1), Validators.required ]),
+              'horasDia': new FormControl(element.horasDia, [ Validators.min(1), Validators.max(24), Validators.required ]),
+              'diaSemana': new FormControl(element.diaSemana, [ Validators.min(1), Validators.max(7), Validators.required ])
             })
           )
 
@@ -185,11 +187,11 @@ export class CensoComponent implements OnInit {
           Validators.required,
           this.noVacio
         ]),
-        'numero': new FormControl(1, Validators.min(1)),
-        'potencia': new FormControl(1),
-        'fd': new FormControl(1, [ Validators.min(0), Validators.max(1) ]),
-        'horasDia': new FormControl(1, [ Validators.min(1), Validators.max(24) ]),
-        'diaSemana': new FormControl(1, [ Validators.min(1), Validators.max(7) ])
+        'numero': new FormControl(1,    [ Validators.min(1), Validators.required]),
+        'potencia': new FormControl(1,  [ Validators.min(0), Validators.required ]),
+        'fd': new FormControl(1,        [ Validators.min(0), Validators.max(1), Validators.required ]),
+        'horasDia': new FormControl(1,  [ Validators.min(1), Validators.max(24), Validators.required ]),
+        'diaSemana': new FormControl(1, [ Validators.min(1), Validators.max(7), Validators.required ])
       })
     )
 
@@ -246,6 +248,10 @@ export class CensoComponent implements OnInit {
   }
 
   abrirModal(content){     
+    this.newCarga = this.fb.group({
+      tipo:['', Validators.required],
+      nombre:['', Validators.required]
+    })
     // this.modal = this.modalService.open(newUserModal, { backdrop:'static' , keyboard:false, size: 'lg'} )
     this.modal = this.modalService.open(content, { backdrop:'static' , keyboard:false, windowClass:'newUser-modal', size:'sm'} )
   }
@@ -324,7 +330,7 @@ export class CensoComponent implements OnInit {
         if(carga.categoria === 'Tecnología'){ indicadores_LBE[2] = indicadores_LBE[2] + cargaValue }
         if(carga.categoria === 'Laboratorio'){ indicadores_LBE[3] = indicadores_LBE[3] + cargaValue }
         if(carga.categoria === 'Elevación'){ indicadores_LBE[4] = indicadores_LBE[4] + cargaValue }
-        if(carga.categoria === 'Cosina'){ indicadores_LBE[5] = indicadores_LBE[5] + cargaValue }
+        if(carga.categoria === 'Cocina'){ indicadores_LBE[5] = indicadores_LBE[5] + cargaValue }
         if(carga.categoria === 'Otros'){ indicadores_LBE[6] = indicadores_LBE[6] + cargaValue }
       });
 
@@ -357,6 +363,10 @@ export class CensoComponent implements OnInit {
 
 
 
+  session(useractive){
+    this.userActive = useractive
+  }
+  
 
 
 

@@ -1,0 +1,321 @@
+<div class="container-fluid">   
+  <div class="row" [style.min-height.vh]="100" >
+      <div class="col-12 align-self-start p-0">
+          
+          <!-- MENU DE SESION -->
+          <app-navbar (enviarUserActive)="session($event)" ></app-navbar>                
+          
+          
+          <!-- HEADER CONTENIDO BASICO -->
+          <div class="container-fluid bg-light fadeIn fast">
+            <div class="container">
+                <div class="row">                     
+                    <div class="col-12 d-flex mt-4 pb-3 align-items-center">
+    
+                        <div>
+                            <a routerLink class="routerLink h4" (click)="goBack()" > 
+                                <i class="fas fa-angle-left"></i> Regresar
+                            </a>
+                        </div>
+                        
+                        <h1 class="lighter  mx-auto">
+                            Administrador 
+                        </h1> 
+                    </div>               
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="container fadeIn fast">
+            <div class="d-flex px-3 pt-5 pb-3 row">
+                <span class="h3 lighter">
+                    Usuarios Registrados <i class="fa fa-users" aria-hidden="true" ></i>
+                </span>
+                
+                <div class="ml-auto d-inline-flex align-items-center">
+                    <button class="btn btn-outline-info rounded-0" (click)="nuevoUsuario(newUserModal)">Crear Usuarios <i class="fa fa-user-plus" aria-hidden="true"></i></button>
+                </div>
+                
+            </div>
+
+            <table class="table mt-3">
+                        
+                <thead class="">        
+                    <tr  >
+                        <th>#</th>
+                        <th>NOMBRE</th>
+                        <th>EMAIL</th>                        
+                        <th></th>                        
+                    </tr>    
+                </thead>
+        
+                <tbody>
+        
+                    <tr *ngFor="let usuario of listUser; let i = index;" 
+                        class=" lighter" >
+        
+                        <td > {{ i+1 }} </td>
+        
+                        <td class="">
+                            {{ usuario.nombre }}
+                        </td>
+        
+                        <td class="" >
+                            {{ usuario.email }}
+                        </td>
+        
+                        <td class="">
+                            <div class="d-flex justify-content-center btn-user">
+                                <img 
+                                class="mx-1" 
+                                placement="bottom" [ngbTooltip]="tipContentRP"
+                                (click)="cambiarPassOpenModal(CambiarPass, usuario)" 
+                                src="https://ssl.gstatic.com/apps/cpanel/resources/img/reset-password-24.svg" >
+        
+                                <img 
+                                class="ml-1" 
+                                placement="bottom" [ngbTooltip]="tipContentEU"
+                                (click)="editaUsuarioOpenModal(editUserModal, usuario, i)" 
+                                src="https://ssl.gstatic.com/apps/cpanel/resources/img/edit-person-24.svg" >    
+        
+                                <span [ngbTooltip]="tipContentDU" placement="bottom" 
+                                        (click)="eliminarUsuarioOpenModal(confirmDeleteUser, i)">
+                                    <i class="ml-1 fa fa-eraser"></i>
+                                </span>
+                                
+                            </div>                           
+                        </td>
+        
+                    </tr>
+                
+                </tbody>
+                
+            </table>
+
+        </div>
+
+          
+
+          
+      </div>
+      <footer class="col-12 align-self-end bg-dark">  
+          <p class="text-light text-center p-1 mb-0">
+              Manuel Pinto <i class="far fa-copyright"></i> 2018
+          </p> 
+      </footer>
+  </div>        
+</div>
+
+
+<!-- Tooltips: RESTABLECER PASSWORD -->
+<ng-template #tipContentRP>Restablecer Cotraseña</ng-template>
+<!-- Tooltips: EDITAR USUARIO -->
+<ng-template #tipContentEU>Editar Usuario</ng-template>
+<!-- Tooltips: ELIMINAR USUARIO -->
+<ng-template #tipContentDU>Elimminar Usuario</ng-template>
+
+
+
+<ng-template #newUserModal let-c="close"  let-d="dismiss">
+
+    <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title">Agregar Nuevo Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="pl-3 pr-5 m-0">
+        <hr class="mt-1">
+    </div>
+      
+    <div class="modal-body">
+                
+        <form (ngSubmit)="crearUsuario()" [formGroup]="form_agregar_usuario" ngNativeValidate>    
+
+            <h6> Correo </h6>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" formControlName="email" required>            
+            </div>
+
+            <h6>Nombre</h6>
+            <div class="form-group ">
+                <input type="text" class="form-control" placeholder="Nombre" formControlName="nombre" required>
+            </div>                                            
+
+            <h6>Definir Contraseña</h6>
+
+            <div class="small px-2">
+                <p class="mb-0">- La contraseña debe tener un mínimo 5 caracteres.</p>
+                <p class="mb-1" > - Deberá poseer al menos una o varias de las siguientes características:</p>
+                <ul>
+                    <li>Una mayúscula</li>
+                    <li>Un número</li>
+                    <li>Un caracter especial</li>                            
+                </ul>
+            </div>
+    
+            <hr class="mx-3">
+
+            <br>
+
+            <div class="form-group row">
+
+                <div class="form-group col-6 ">
+                    <input type="password"  placeholder="Escribir contraseña" class="form-control"   
+                        formControlName="password"
+                        pattern="((?=.*[0-9])|(?=.*\W+)|(?=.*[A-Z]))(?=.*[a-z]).{5,}"
+                        required>
+                </div>
+                <div class="form-group col-6">
+                    <input type="password" placeholder="Volver a escribir la contraseña" class="form-control " 
+                        formControlName="passconfirm"
+                        pattern="((?=.*[0-9])|(?=.*\W+)|(?=.*[A-Z]))(?=.*[a-z]).{5,}"
+                        required> 
+                </div>                            
+              
+            </div>
+            
+            <br>
+            <br>
+            
+            <div class="d-flex justify-content-end" >
+                <button type="submit" (click)="d('Cross click')" class="btn btn-sm rounded-0 btn-light mr-3">CANCELAR</button>
+                <button type="submit" [disabled]="loading" class="btn btn-sm rounded-0 btn-info">CREAR USUARIO</button>
+            </div>
+        </form>
+
+    </div>
+
+</ng-template>
+
+<ng-template #editUserModal let-c="close"  let-d="dismiss">
+
+    <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title">Editar Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="pl-3 pr-5 m-0">
+        <hr class="mt-1">
+    </div>
+      
+    <div class="modal-body">
+                
+        <form (ngSubmit)="editarUsuario()" [formGroup]="form_agregar_usuario" ngNativeValidate>    
+
+            <h6> Correo </h6>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" formControlName="email" required>            
+            </div>
+
+            <h6>Nombre</h6>
+            <div class="form-group ">
+                <input type="text" class="form-control" placeholder="Nombre" formControlName="nombre" required>
+            </div>                                            
+
+            <input type="hidden" formControlName="id" >
+        
+            <br>
+            <br>
+            
+            <div class="d-flex justify-content-end" >
+                <button type="submit" (click)="d('Cross click')" class="btn btn-sm rounded-0 btn-light mr-3">CANCELAR</button>
+                <button type="submit" [disabled]="loading" class="btn btn-sm rounded-0 btn-info">GUARDAR CAMBIOS</button>
+            </div>
+        </form>
+
+    </div>
+
+</ng-template>
+
+<ng-template #CambiarPass let-c="close"  let-d="dismiss">
+
+    <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title">Restablecer Contraseña</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="pl-3 pr-5 m-0">
+        <hr class="mt-1">
+    </div>
+      
+    <div class="modal-body">
+                
+        <form (ngSubmit)="cambiarPass()" [formGroup]="form_agregar_usuario" ngNativeValidate>    
+
+            <h6>Definir Contraseña</h6>
+
+            <div class="small px-2">
+                <p class="mb-0">- La contraseña debe tener un mínimo 5 caracteres.</p>
+                <p class="mb-1" > - Deberá poseer al menos una o varias de las siguientes características:</p>
+                <ul>
+                    <li>Una mayúscula</li>
+                    <li>Un número</li>
+                    <li>Un caracter especial</li>                            
+                </ul>
+            </div>
+    
+            <hr class="mx-3">
+
+            <br>            
+            
+            <div class="form-group row">
+                
+                <div class="form-group col-6 ">
+                    <input type="password"  placeholder="Escribir contraseña" class="form-control"   
+                    formControlName="password"
+                    pattern="((?=.*[0-9])|(?=.*\W+)|(?=.*[A-Z]))(?=.*[a-z]).{5,}"
+                    required>
+                </div>
+                <div class="form-group col-6">
+                    <input type="password" placeholder="Volver a escribir la contraseña" class="form-control " 
+                    formControlName="passconfirm"
+                    pattern="((?=.*[0-9])|(?=.*\W+)|(?=.*[A-Z]))(?=.*[a-z]).{5,}"
+                    required> 
+                </div>                            
+            </div>
+            
+            <input type="hidden" formControlName="id" >
+
+            <br>
+            <br>
+            
+            <div class="d-flex justify-content-end" >
+                <button type="submit" (click)="d('Cross click')" class="btn btn-sm rounded-0 btn-light mr-3">CANCELAR</button>
+                <button type="submit" [disabled]="loading" class="btn btn-sm rounded-0 btn-info">GUARDAR CAMBIOS</button>
+            </div>
+        </form>
+
+    </div>
+
+</ng-template>
+
+<ng-template #confirmDeleteUser let-c="close" let-d="dismiss">
+
+    <div class="modal-header py-2">
+        <h4 class="modal-title lead">Mensaje de confirmación</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body py-3">
+        <div class="pb-3"> Estás a punto de 
+            <strong class="text-danger" >Eliminar</strong>
+                esta usuario, estas seguro de hacerlo ?
+        </div>
+        <div class="d-flex justify-content-end">
+            <div>
+                <button type="button" (click)="d('Cross click')" class=" ">CANCELAR</button>
+                <button type="button" (click)="eliminarUsuario()" class=" ">ELIMINAR USUARIO</button>
+            </div>
+        </div>     
+    </div>
+
+</ng-template>  

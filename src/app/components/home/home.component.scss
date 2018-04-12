@@ -1,6 +1,5 @@
-.card{
-    height: 13rem;
-    max-height: 13rem;
+input{
+    border-radius: 0;
 }
 
 .card:hover{
@@ -9,10 +8,23 @@
 
 .card-text{
     font-size: 14px;
-    // height: 4rem;
+    height: 4rem;
+    max-height: 4rem;
     // overflow-y: hidden;   
     -webkit-line-clamp: 3;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+}
+
+.drop{
+    &:hover{
+        color: #dc3545;
+    }
+}
+
+.addi{
+    &:hover{
+        color: #17a2b8;
+    }
 }

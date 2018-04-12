@@ -20,7 +20,10 @@ import { TipoCargaService } from './services/tipo-carga.service'
 import { InstitucionService } from './services/institucion.service'
 import { DependenciaService } from './services/dependencia.service'
 import { FacturadoService } from './services/facturado.service'
- 
+import { UsuarioService } from './services/usuario.service'
+
+import { AuthGuard } from './guard/auth.guard'
+
 // HttpCliente
 import { HttpClientModule } from '@angular/common/http'
 
@@ -30,7 +33,6 @@ import { HomeComponent } from './components/home/home.component';
 import { InstitucionComponent } from './components/institucion/institucion.component';
 import { CensoComponent } from './components/censo/censo.component';
 import { LineasComponent } from './components/graficas/lineas/lineas.component';
-import { BarrasComponent } from './components/graficas/barras/barras.component';
 import { CiclosComponent } from './components/ciclos/ciclos.component'
 import { PlanComponent } from './components/plan/plan.component'
 
@@ -42,11 +44,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 // ------------------------------------------------------
 // PIPES
 import { HoraMilitarPipe } from './pipes/hora-militar.pipe'
+import { NavbarComponent } from './components/navbar/navbar.component'
+import { AdminComponent } from './components/admin/admin.component'
+import { LbeComponent } from './components/lbe/lbe.component'
+import { AcercaDeComponent } from './components/acerca-de/acerca-de.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent, InstitucionComponent, CensoComponent, LineasComponent, BarrasComponent, CiclosComponent, HoraMilitarPipe, PlanComponent
+    HomeComponent, InstitucionComponent, CensoComponent, LineasComponent, 
+    CiclosComponent, HoraMilitarPipe, PlanComponent, NavbarComponent, AdminComponent,
+    LbeComponent, AcercaDeComponent
   ],
   imports: [
     BrowserModule, app_routing, FormsModule, ChartsModule,
@@ -54,7 +62,7 @@ import { HoraMilitarPipe } from './pipes/hora-militar.pipe'
   ],
   providers: [
     {provide: LOCALE_ID, useValue:"es"}, TipoCargaService, InstitucionService, DependenciaService,
-    FacturadoService
+    FacturadoService, UsuarioService, AuthGuard
   ],
   bootstrap: [AppComponent]
 })

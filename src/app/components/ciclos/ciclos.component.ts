@@ -20,10 +20,11 @@ import { Router, ActivatedRoute } from '@angular/router'
 
 export class CiclosComponent implements OnInit {
 
+  userActive = ''
   fomulario_data_clicos: FormGroup
 
   institucion_activa:Institucion=new Institucion('','','','','')
-  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 , '' , '' , '' , [],[],[],[],[] )
+  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 ,[], '' , '' , '' , [],[],[],[],[] )
   cicloData:Ciclos=new Ciclos(0,0,[],[])
   
   
@@ -47,20 +48,21 @@ export class CiclosComponent implements OnInit {
     private dependenciaService:DependenciaService,
     private institucionService:InstitucionService ){   
     
+      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
     
-    activatedRoute.params.subscribe(params=>{
+      activatedRoute.params.subscribe(params=>{
 
-      this.dependenciaService.getDependencia(params['id_dependecia']).subscribe((res:any)=>{        
-        this.dependencia_activa = res.data        
-        
-        if(this.dependencia_activa.ciclo.inicio>-1){
+        this.dependenciaService.getDependencia(params['id_dependecia']).subscribe((res:any)=>{        
+          this.dependencia_activa = res.data        
           
-          this.cicloData = this.dependencia_activa.ciclo          
-          
-          this.lineChartLabels = this.cicloData.invtervalo
-          this.lineChartData[0].data = this.cicloData.valores
-          
-        }
+          if(this.dependencia_activa.ciclo.inicio>-1){
+            
+            this.cicloData = this.dependencia_activa.ciclo          
+            
+            this.lineChartLabels = this.cicloData.invtervalo
+            this.lineChartData[0].data = this.cicloData.valores
+            
+          }
         
 
         this.institucionService.getInstitucion(this.dependencia_activa.id_institucion).subscribe((res:any)=>{        
@@ -311,6 +313,10 @@ fileChangeEvent(e){
 
 resetLabelFile(){
   document.getElementById('customFileLabel').innerHTML = 'Seleccione un Archivo'
+}
+
+session(useractive){
+  this.userActive = useractive
 }
 
 

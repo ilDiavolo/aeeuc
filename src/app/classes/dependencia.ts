@@ -9,6 +9,7 @@ export class Dependencia {
         public nombre:string,
         public area_util:number,
         public area_bruta:number,
+        public indicadores_lbe: number[],
         public compania_electrica:string,
         public nic:string,
         public numero_medidor:string,

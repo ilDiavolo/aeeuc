@@ -1,0 +1,54 @@
+
+.routerLink{
+    &:hover{
+        color: #0056b3;
+        text-decoration: underline;
+    }
+}
+
+th{
+    border-bottom: 0 !important;
+}
+
+// .tooltip{ margin-top: 5px }
+// .arrow{ visibility: hidden }
+// .tooltip-inner{
+//     background-color: rgb(136, 136, 136) !important;
+//     color: rgb(255, 255, 255);
+// }
+
+.btn-user{  
+    
+    svg{
+        opacity: .5;    
+        cursor: pointer;
+        &:hover{
+            opacity: 1;
+        }
+    }
+
+    span{
+        font-size: 24px;
+        opacity: .9;    
+        cursor: pointer;
+        &:hover{
+            opacity: 1;
+        }
+    }
+    
+    img{
+
+        opacity: .5;    
+        cursor: pointer;
+        &:hover{
+            opacity: 1;
+        }
+    }
+    
+}
+
+
+
+input{
+    border-radius: 0;
+}
