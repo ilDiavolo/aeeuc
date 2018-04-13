@@ -10,11 +10,9 @@
             </div>
             
             <!-- HEADER CONTENIDO BASICO -->
-<<<<<<< HEAD
+
             <div class="row fast fadeIn text-light" style="background-color: #5a5a5a; " > 
-=======
-            <div class="row fast fadeIn bg-light"> 
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
                 <!-- <div class="col-3 bg-secondary"></div> -->
                 <div class=" col-12 p-3 text-center "  >
                     <h1 class="m-0 mt-2" > {{ institucion_activa.nombre }} </h1>
@@ -78,11 +76,9 @@
                     <!-- FACTURADO -->
                     <div class="p-3" #facturdo >
                         <div class="d-flex align-items-center  px-5 " >
-<<<<<<< HEAD
+
                             <h1 class="text-secondary  text-center mx-auto mb-0" >Facturado</h1>                            
-=======
-                            <h1 class="lighter text-center mx-auto mb-0" >Facturado</h1>                            
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
                             <div *ngIf="lista_dependencias.length>0 && userActive " (click)="editar_factura = !editar_factura" 
                                     class="actionEdit cursor">
                                 <span class="mr-2 lead">
@@ -161,11 +157,8 @@
 
                             <span class="invisible" >******</span>
 
-<<<<<<< HEAD
                             <h1 class="text-secondary  mb-0" >Censo de Carga</h1>  
-=======
-                            <h1 class="lighter mb-0" >Censo de Carga</h1>  
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
 
                             <a *ngIf="lista_dependencias.length>0 && userActive" class="cursor actionEdit routerLink" 
                                 [routerLink]="['/censo', dependencia_activa._id]" >
@@ -259,11 +252,9 @@
 
                         <div class="d-flex align-items-center justify-content-between px-5 " >
                             <span class="invisible" >******</span>
-<<<<<<< HEAD
+
                             <h1 class="text-secondary  mb-0" >Ciclos de Carga</h1>                            
-=======
-                            <h1 class="lighter mb-0" >Ciclos de Carga</h1>                            
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
                             <div *ngIf="lista_dependencias.length>0 && userActive" class=" actionEdit cursor">
                                 <a *ngIf="lista_dependencias.length>0 && userActive" class="cursor actionEdit routerLink" [routerLink]="['/ciclos', dependencia_activa._id]" >
                                     <span class="mr-2 lead">
@@ -296,15 +287,13 @@
                         <br>
 
                         <div class="d-flex align-items-baseline justify-content-center px-5 " > 
-<<<<<<< HEAD
+
                             <h1 class="text-secondary  mb-0" >Linea de Base Energética</h1>
                         </div>
                         <div class="px-5 mt-3 text-center">
                             <span class="lead"> <strong>Área Útil</strong>: {{dependencia_activa.area_util}} m<sup>2</sup> </span>                        
                             <span class="ml-3 lead"><strong>Área Bruta</strong>: {{dependencia_activa.area_bruta}} m<sup>2</sup></span>
-=======
-                            <h1 class="lighter mb-0" >Linea de Base Energética</h1>
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
                         </div>
                         <div class="px-5 mt-3 text-center">
                             <span class="lead"> <strong>Área Útil</strong>: {{dependencia_activa.area_util}} m<sup>2</sup> </span>                        
@@ -333,11 +322,9 @@
                         <br>
                         <div class="d-flex align-items-center justify-content-between px-5 " >
                             <span class="invisible" >******</span>
-<<<<<<< HEAD
+
                             <h1 class="text-secondary  mb-0" >Plan de Ahorro</h1>                            
-=======
-                            <h1 class="lighter mb-0" >Plan de Ahorro</h1>                            
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
                             <a *ngIf="(lista_dependencias.length>0) && (dependencia_activa.censo.length > 0) && userActive" 
                                 class="cursor actionEdit routerLink" [routerLink]="['/plan', dependencia_activa._id]" >
                                 <span class="mr-2 lead">
@@ -597,14 +584,12 @@
                 <div class="form-group col-6">
                     <label for="tarifa">Tarifa</label>
                     <input type="number" formControlName="tarifa" class="form-control" 
-<<<<<<< HEAD
+
                             placeholder="Tarifa" min="0" max="1" step="0.001" 
                             oninput="setCustomValidity('')"
                             oninvalid="setCustomValidity('El valor debe estar comprendido entre 0 y 1')"
                             required>
-=======
-                            placeholder="Tarifa" min="0" max="1" step="0.1" required>
->>>>>>> 9374ac9ade051155ee743b2182993de3c5f1bc97
+
                 </div>
     
                 <div class="form-group col-6">
