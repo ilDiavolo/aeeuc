@@ -58,19 +58,19 @@ export class NavbarComponent implements OnInit {
     
     vengo_de = vengo_de.split('/')    
 
-    if( (estoy_en[3]!=="lbe") && (estoy_en[3]!=="acerca-de") && 
-        (estoy_en[3]!=="home") && (estoy_en[3]!=="admin") ){
+    if( (estoy_en[2]!=="lbe") && (estoy_en[2]!=="acerca-de") && 
+        (estoy_en[2]!=="home") && (estoy_en[2]!=="admin") ){
 
-      if (estoy_en[3]) {
+      if (estoy_en[2]) {
 
-        this.site = estoy_en[3]
+        this.site = estoy_en[2]
         this.site = '/'+this.site
       
-        if (estoy_en[4]) {
-          this.id_lv1 = estoy_en[4]
+        if (estoy_en[3]) {
+          this.id_lv1 = estoy_en[3]
   
-          if (estoy_en[5]) {
-            this.id_lv2 = estoy_en[5]
+          if (estoy_en[4]) {
+            this.id_lv2 = estoy_en[4]
 
           }
         }
@@ -81,16 +81,16 @@ export class NavbarComponent implements OnInit {
 
     }else{
 
-      if (vengo_de[3]) {
+      if (vengo_de[2]) {
 
-        this.site = vengo_de[3]
+        this.site = vengo_de[2]
         this.site = '/'+this.site
       
-        if (vengo_de[4]) {
-          this.id_lv1 = vengo_de[4]
+        if (vengo_de[3]) {
+          this.id_lv1 = vengo_de[3]
   
-          if (vengo_de[5]) {
-            this.id_lv2 = vengo_de[5]
+          if (vengo_de[4]) {
+            this.id_lv2 = vengo_de[4]
 
           }
         }
@@ -146,8 +146,8 @@ export class NavbarComponent implements OnInit {
     let estoy_en:any = location.pathname
     estoy_en = estoy_en.split('/')
 
-    if( (estoy_en[3]==='admin') || (estoy_en[3]==='ciclos') || 
-        (estoy_en[3]==='plan') || (estoy_en[3]==='censo') ){
+    if( (estoy_en[2]==='admin') || (estoy_en[2]==='ciclos') || 
+        (estoy_en[2]==='plan') || (estoy_en[2]==='censo') ){
 
 
           this.router.navigate(['/home'])
