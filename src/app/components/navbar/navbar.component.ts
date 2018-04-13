@@ -52,8 +52,8 @@ export class NavbarComponent implements OnInit {
         
     if (!vengo_de) {
       // localStorage.setItem('site','/home')
-      sessionStorage.setItem('site','/home')
-      vengo_de = '/home'
+      sessionStorage.setItem('site','/aeeuc/home')
+      vengo_de = '/aeeuc/home'
     }   
     
     vengo_de = vengo_de.split('/')    
