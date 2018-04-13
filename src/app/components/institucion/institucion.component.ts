@@ -10,7 +10,7 @@ import { DependenciaService } from '../../services/dependencia.service';
 import { InstitucionService } from '../../services/institucion.service';
 import { FacturadoService } from '../../services/facturado.service';
 
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,8 +22,9 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class InstitucionComponent implements OnInit {
 
 
+  userActive = ''
   institucion_activa:Institucion=new Institucion('','','','','')
-  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 , '' , '' , '' , [],[],[],[],[] )
+  dependencia_activa:Dependencia=new Dependencia( '', '' , '' , 0 , 0 , [], '' , '' , '' , [],[],[],[],[] )
 
 
   lista_dependencias:Dependencia[]=[]
@@ -41,8 +42,8 @@ export class InstitucionComponent implements OnInit {
   // ============================= GRAFICA DE BARRAS =======================================
   
   public barChartLabels:string[] = ['Iluminación', 'Climatización', 'Tecnología',
-  'Laboratorio', 'Elevación', 'Cosina', 'Otros']
-  public barCharDataRef = [1, 1, 1, 1, 1, 1, 1]  
+  'Laboratorio', 'Elevación', 'Cocina', 'Otros']
+  public barCharDataRef = []  
 
   public barChartData:any[] = [
     {data: [], label: 'Series A'},
@@ -85,24 +86,7 @@ export class InstitucionComponent implements OnInit {
     private institucionService:InstitucionService,
     private facturadoService:FacturadoService ){
 
-    this.fomulario_nueva_dependencia = fb.group({
-      nombre:             ['', Validators.required],
-      area_util:          ['', Validators.required],
-      area_bruta:         ['', Validators.required],
-      compania_electrica: ['', Validators.required],
-      nic:                ['', Validators.required],
-      numero_medidor:     ['', Validators.required]
-    })
-
-    this.fomulario_agregar_factura = fb.group({
-      fecha :           ['', Validators.required],
-      numero_factura :  ['', Validators.required],
-      kwh :             [ Validators.required ],
-      kva :             [ Validators.required ],
-      tarifa :          [ Validators.required ],
-      monto :           [ Validators.required ],
-    })
-
+      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
   }
 
   ngOnInit() {
@@ -129,9 +113,8 @@ export class InstitucionComponent implements OnInit {
         
       })
 
-    })    
-    
-    
+    })       
+       
   }
 
   // events
@@ -169,7 +152,7 @@ export class InstitucionComponent implements OnInit {
         this.dependencia_activa.lbe.forEach((element, index) => {
           
           if (element>0) {            
-            dataRef.push(this.barCharDataRef[index])            
+            dataRef.push(this.dependencia_activa.indicadores_lbe[index])            
           }else{
             dataRef.push(0)
           }
@@ -229,17 +212,43 @@ export class InstitucionComponent implements OnInit {
 
   // ================================================================================
   
-  open_agregar_factura(content){     
+  open_agregar_factura(content){  
+    this.fomulario_agregar_factura = this.fb.group({
+      fecha :           ['', Validators.required],
+      numero_factura :  ['', Validators.required],
+      kwh :             [ Validators.required ],
+      kva :             [ Validators.required ],
+      tarifa :          [ Validators.required ],
+      monto :           [ Validators.required ],
+    })   
     // this.modal = this.modalService.open(newUserModal, { backdrop:'static' , keyboard:false, size: 'lg'} )
     this.modal_agregar_factura = this.modalService.open(
       content, { backdrop:'static' , keyboard:false, windowClass:'newUser-modal'} 
     )
   }
   
-  open_agregar_dependencia(content){     
+  open_agregar_dependencia(content){  
+    this.fomulario_nueva_dependencia = this.fb.group({
+      nombre:             ['', Validators.required],
+      area_util:          [ Validators.required, Validators.min(0)],
+      area_bruta:         [ Validators.required, Validators.min(0)],
+      indicadores_lbe:    this.fb.array([
+        new FormControl("", [Validators.required, Validators.min(0)] ),
+        new FormControl("", [Validators.required, Validators.min(0)] ),
+        new FormControl("", [Validators.required, Validators.min(0)] ),
+        new FormControl("", [Validators.required, Validators.min(0)] ),
+        new FormControl("", [Validators.required, Validators.min(0)] ),
+        new FormControl("", [Validators.required, Validators.min(0)] ),
+        new FormControl("", [Validators.required, Validators.min(0)] )
+       
+      ]) ,
+      compania_electrica: ['', Validators.required],
+      nic:                ['', Validators.required],
+      numero_medidor:     ['', Validators.required]
+    })   
     // this.modal = this.modalService.open(newUserModal, { backdrop:'static' , keyboard:false, size: 'lg'} )
     this.modal_nueva_dependencia = this.modalService.open(
-      content, { backdrop:'static' , keyboard:false, windowClass:'newUser-modal'} 
+      content, { backdrop:'static' , keyboard:false, windowClass:'newUser-modal' } 
     )
   }
   
@@ -276,17 +285,19 @@ export class InstitucionComponent implements OnInit {
         value.nombre,
         value.area_util,
         value.area_bruta,
+        value.indicadores_lbe,
         value.compania_electrica,
         value.nic,
         value.numero_medidor,        
         [],[],[],[],[]
       )
-
+      console.log(newDependencia)
       this.dependenciaService.addDependencia(newDependencia).subscribe(res=>{
         this.lista_dependencias.push(res.data)
       })
+
     }
-    
+
     this.fomulario_nueva_dependencia.reset()
 
     this.modal_nueva_dependencia.close()
@@ -341,6 +352,11 @@ export class InstitucionComponent implements OnInit {
     // this.router.navigate(['/institucion', this.dependencia_activa.id_institucion ])
     location.reload()
   }
+
+  session(useractive){
+    this.userActive = useractive
+  }
+  
 
 
 }

@@ -33,3 +33,30 @@ th{
         color: #dc3545;
     }
 }
+
+input{
+    border-radius: 0;
+}
+
+.actionEdit{
+    color: #17a2b8;
+    &:hover{
+        color: #0f6875;
+    }
+}
+
+#up{
+    position: fixed;
+    bottom: 50px; 
+    right: 50px;
+    display: none;
+    font-size: 4rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.dep{
+    &:first-child{
+        border-top: 0;
+    }
+}

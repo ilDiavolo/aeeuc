@@ -12,14 +12,17 @@ import { Dependencia } from '../classes/dependencia';
 @Injectable()
 export class DependenciaService {
 
+  url
   url_prd = 'https://aeeuc2018backend.herokuapp.com'
   url_dev = 'http://localhost:5000'
 
-  constructor( private httpClient:HttpClient ) { }
+  constructor( private httpClient:HttpClient ) { 
+    this.url=this.url_prd 
+  }
     
 
   public allDependencia(id:string):Observable<Dependencia[]>{
-    return this.httpClient.get<Dependencia>('https://aeeuc2018backend.herokuapp.com/allDependencia/'+id)
+    return this.httpClient.get<Dependencia>( this.url+'/allDependencia/'+id)
     .catch(e=>{
       return Observable.of(e)
     })
@@ -27,35 +30,35 @@ export class DependenciaService {
 
   // id : dependencia
   public getDependencia(id:string):Observable<Dependencia>{
-    return this.httpClient.get<Dependencia>('https://aeeuc2018backend.herokuapp.com/dependencia/'+id)
+    return this.httpClient.get<Dependencia>(this.url+'/dependencia/'+id)
     .catch(e=>{
       return Observable.of(e)
     })
   }
 
   public addDependencia(d:Dependencia): Observable<any>{
-    return this.httpClient.post('https://aeeuc2018backend.herokuapp.com/dependencia', d)
+    return this.httpClient.post(this.url+'/dependencia', d)
     .catch(e=>{
       return Observable.of(e)
     })
   }
 
   public updateCenso(d:Dependencia){
-    return this.httpClient.put('https://aeeuc2018backend.herokuapp.com/updateCenso', d)
+    return this.httpClient.put(this.url+'/updateCenso', d)
     .catch(e=>{
       return Observable.of(e)
     })
   }
 
   public updateCiclo(d:Dependencia){
-    return this.httpClient.put('https://aeeuc2018backend.herokuapp.com/updateCiclo', d)
+    return this.httpClient.put(this.url+'/updateCiclo', d)
     .catch(e=>{
       return Observable.of(e)
     })
   }
 
   public killDependencia(id){
-    return this.httpClient.delete('https://aeeuc2018backend.herokuapp.com/dependencia/'+id)
+    return this.httpClient.delete(this.url+'/dependencia/'+id)
     .catch(e=>{
       return Observable.of(e)
     })

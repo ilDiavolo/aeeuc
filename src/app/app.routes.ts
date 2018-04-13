@@ -6,6 +6,11 @@ import { CensoComponent } from './components/censo/censo.component'
 import { CiclosComponent } from './components/ciclos/ciclos.component'
 import { PlanComponent } from './components/plan/plan.component'
 
+import { AcercaDeComponent } from './components/acerca-de/acerca-de.component'
+import { LbeComponent } from './components/lbe/lbe.component'
+import { AdminComponent } from './components/admin/admin.component'
+
+import { AuthGuard } from './guard/auth.guard'
 
 const routes: Routes = [
     
@@ -18,9 +23,14 @@ const routes: Routes = [
         path: 'institucion/:id_institucion/:id_dependecia', 
         component: InstitucionComponent
     },
-    { path: 'censo/:id_dependecia', component: CensoComponent },
-    { path: 'plan/:id_dependecia', component: PlanComponent },
-    { path: 'ciclos/:id_dependecia', component: CiclosComponent },
+    { path: 'censo/:id_dependecia', component: CensoComponent, canActivate: [AuthGuard] },
+    { path: 'plan/:id_dependecia', component: PlanComponent, canActivate: [AuthGuard] },
+    { path: 'ciclos/:id_dependecia', component: CiclosComponent, canActivate: [AuthGuard] },
+
+    { path: 'lbe', component: LbeComponent  },
+    { path: 'acerca-de', component: AcercaDeComponent  },
+    { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+
     { path: '**', pathMatch: 'full', redirectTo:'home' }
 
 ];

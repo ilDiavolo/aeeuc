@@ -11,6 +11,7 @@ import { Institucion } from '../../classes/institucion';
 import { InstitucionService } from '../../services/institucion.service';
 import { DependenciaService } from '../../services/dependencia.service';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -19,20 +20,28 @@ import { DependenciaService } from '../../services/dependencia.service';
 export class HomeComponent implements OnInit {
 
   instituciones:Institucion[]=[]
+  tiposDeInstitucion = ['Educacional','De Salud','Económicas','Religiosas','Públicas','Sociales','De Caridad']
 
   // modal
   modal:NgbModalRef
+  modal_confirm_delete_institucion:NgbModalRef
 
   // formGroup
   formInstitucion:FormGroup
 
+  pos
+  userActive=''
+
   constructor(
+
     private router:Router,
     private modalService: NgbModal, 
     private fb: FormBuilder, 
     private institucionService:InstitucionService, 
     private dependenciaService:DependenciaService ){ 
 
+      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
+      
       this.formInstitucion = fb.group({        
         nombre:       ['', Validators.required],
         tipo:         ['', Validators.required],
@@ -49,7 +58,13 @@ export class HomeComponent implements OnInit {
 
   }
 
-  openModal(content){     
+  openModal(content){    
+    this.formInstitucion = this.fb.group({        
+      nombre:       ['', Validators.required],
+      tipo:         ['', Validators.required],
+      rif:          ['', Validators.required],
+      descripcion:  ['', Validators.required]
+    }) 
     // this.modal = this.modalService.open(newUserModal, { backdrop:'static' , keyboard:false, size: 'lg'} )
     this.modal = this.modalService.open(content, { backdrop:'static' , keyboard:false, windowClass:'newUser-modal'} )
   }
@@ -74,7 +89,30 @@ export class HomeComponent implements OnInit {
 
   }
 
+  open_confirm_delete_institution(content, value){
+    this.pos = value     
+    // this.modal = this.modalService.open(newUserModal, { backdrop:'static' , keyboard:false, size: 'lg'} )
+    this.modal_confirm_delete_institucion = this.modalService.open(
+      content, { backdrop:'static' , keyboard:false, windowClass:'confirmDelete'} 
+    )
+  }
+  
+  eliminarInstitucion(){
+    
+    this.modal_confirm_delete_institucion.close()
+    
+    this.institucionService.killInstitucion(this.instituciones[this.pos]._id).subscribe(res=>{
+      console.log(res)
+      this.instituciones.splice(this.pos,1)
+    })
+    
 
+  }
+
+
+  session(useractive){
+    this.userActive = useractive
+  }
   
 
 }

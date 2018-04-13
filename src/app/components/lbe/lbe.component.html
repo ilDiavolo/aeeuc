@@ -1,0 +1,208 @@
+<div class="container-fluid">   
+  <div class="row" [style.min-height.vh]="100" >
+      <div class="col-12 align-self-start">
+          
+          <!-- MENU DE SESION -->
+          <div class="row">
+              <div class="col-12 p-0">
+
+                  <app-navbar></app-navbar>
+                  
+              </div>
+          </div>
+          
+          <!-- HEADER CONTENIDO BASICO -->
+          <div class="row"> 
+              
+           </div>
+
+           <div class="row bg-light pt-5 fadeIn fast">
+                <div class="container"> 
+                    
+                        <h1 class="lighter mb-4 text-capitalize"> Línea de Base Energética  <small class="text-primary lighter">Valores de Referencia</small> </h1>
+                    
+                        <p>
+                            <span class="ml-5">Una</span> línea de base energética es una referencia cuantitativa que proporciona la base de 
+                            comparación del desempeño energético. Y un indicador de desempeño energético es un valor 
+                            cuantitativo que pretende medir y aportar información sobre el desempeño energético de un grupo 
+                            de equipos o de un sistema en particular.    
+                        </p>                    
+         
+                        <p>
+                            <span class="ml-5">Para</span> la asignación de los valores correspondientes 
+                            a los indicadores de desempeño energético utilizados como referencias en la 
+                            comparativa con los indicadores de desempeño arrojados por la aplicación 
+                            pertenecientes al censo de carga correspondiente se tomaron como criterio los 
+                            valores de la siguiente tabla correspondiente al consumo energético en el
+                            Reino Unido. Basado en DETR (2000b).
+                        </p>
+                </div>
+
+            </div>
+
+            <div class="row pt-4 pb-5 fadeIn fast">
+                <div class="container">
+                    
+                        <table class="table table-sm table-bordered">
+
+                            <thead class="thead-light">
+
+                                <tr class="text-center">
+                                    <th></th>
+                                    <th colspan="8" >
+                                        kWh/m<sup>2</sup> de Superfície útil                                                                                  
+                                    </th>                                                                
+                                </tr>
+
+                                <tr class="text-center" >         
+                                    <th></th>                       
+                                    <th colspan="2" >Tipo1</th>
+                                    <th colspan="2">Tipo2</th>
+                                    <th colspan="2">Tipo3</th>
+                                    <th colspan="2">Tipo4</th>
+                                </tr>
+
+                                <tr class="text-center">
+                                    <th></th>
+                                    <th>Eficiente</th>
+                                    <th>Típica</th>
+                                    <th>Eficiente</th>
+                                    <th>Típica</th>
+                                    <th>Eficiente</th>
+                                    <th>Típica</th>
+                                    <th>Eficiente</th>
+                                    <th>Típica</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+                                <tr class="text-center">
+                                    <td class="text-left">Calefacción Y ACS</td>
+                                    <td>79</td>
+                                    <td>151</td>
+                                    <td>79</td>
+                                    <td>151</td>
+                                    <td>97</td>
+                                    <td>178</td>
+                                    <td>07</td>
+                                    <td>201</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Refrigeracíon </td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                    <td>31</td>
+                                    <td>21</td>
+                                    <td>41</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Ventiladores, Bombas y Control </td>
+                                    <td>2</td>
+                                    <td>6</td>
+                                    <td>4</td>
+                                    <td>8</td>
+                                    <td>30</td>
+                                    <td>60</td>
+                                    <td>36</td>
+                                    <td>67</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Humidificadores </td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>8</td>
+                                    <td>18</td>
+                                    <td>12</td>
+                                    <td>23</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Iluminación</td>
+                                    <td>14</td>
+                                    <td>23</td>
+                                    <td>22</td>
+                                    <td>38</td>
+                                    <td>27</td>
+                                    <td>54</td>
+                                    <td>29</td>
+                                    <td>60</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Equipos de Oficina </td>
+                                    <td>12</td>
+                                    <td>18</td>
+                                    <td>20</td>
+                                    <td>27</td>
+                                    <td>23</td>
+                                    <td>31</td>
+                                    <td>23</td>
+                                    <td>32</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Catering</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>20</td>
+                                    <td>24</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Otros Consumos Eléctricos</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>13</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr class="text-center">
+                                    <td class="text-left">Equipos Informáticos</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>14</td>
+                                    <td>18</td>
+                                    <td>87</td>
+                                    <td>105</td>
+                                </tr>
+                               
+                            </tbody>
+                        </table>
+                            
+                        <p class="mt-4 ">
+                            Los tipos a los que se hacen referencia en la tabla
+                            anterior, se clasifican atendiendo el tipo de sistema de refrigeración.
+                        </p>        
+
+                        <p class="mb-0"> <strong> <i class="fas fa-caret-right"></i> Tipo 1:</strong> Ventilación Natural. </p>
+                        <p class="mb-0"> <strong> <i class="fas fa-caret-right"></i> Tipo 2:</strong> Ventilación Mecánica. </p>
+                        <p class="mb-0"> <strong> <i class="fas fa-caret-right"></i> Tipo 3:</strong> Aire Acondicionado Estandar. </p>
+                        <p class="mb-0"> <strong> <i class="fas fa-caret-right"></i> Tipo 4:</strong> Aire Acondicionado Eficiente. </p>
+                       
+                    
+                </div>
+            </div>
+
+          
+
+          
+      </div>
+      <footer class="col-12 align-self-end bg-dark">  
+          <p class="text-light text-center p-1 mb-0">
+              Manuel Pinto <i class="far fa-copyright"></i> 2018
+          </p> 
+      </footer>
+  </div>        
+</div>
