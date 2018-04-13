@@ -71,6 +71,7 @@ export class NavbarComponent implements OnInit {
   
           if (estoy_en[5]) {
             this.id_lv2 = estoy_en[5]
+
           }
         }
       }
@@ -90,6 +91,7 @@ export class NavbarComponent implements OnInit {
   
           if (vengo_de[5]) {
             this.id_lv2 = vengo_de[5]
+
           }
         }
       }
@@ -146,6 +148,7 @@ export class NavbarComponent implements OnInit {
 
     if( (estoy_en[3]==='admin') || (estoy_en[3]==='ciclos') || 
         (estoy_en[3]==='plan') || (estoy_en[3]==='censo') ){
+
 
           this.router.navigate(['/home'])
     }
