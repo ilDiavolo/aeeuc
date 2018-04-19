@@ -17,7 +17,7 @@ export class UsuarioService {
   url_dev = 'http://localhost:5000'
 
   constructor( private httpClient:HttpClient ) { 
-    this.url=this.url_dev
+    this.url=this.url_prd
   }
 
   login(email:string, password:string): Observable<any>{

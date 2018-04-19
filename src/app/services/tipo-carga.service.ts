@@ -20,7 +20,7 @@ export class TipoCargaService {
   url_dev = 'http://localhost:5000'
 
   constructor(private httpClient:HttpClient ) { 
-    this.url=this.url_dev
+    this.url=this.url_prd
   }
 
   public getCargas(): Observable<TipoCarga[]>{

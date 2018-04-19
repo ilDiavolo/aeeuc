@@ -17,7 +17,7 @@ export class FacturadoService {
 
 
   constructor( private httpClient:HttpClient) { 
-    this.url=this.url_dev
+    this.url=this.url_prd
   }
 
   public addFactura(d:Dependencia): Observable<any>{
