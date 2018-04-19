@@ -8,6 +8,7 @@ import { Ciclos } from '../../classes/ciclos';
 // Services
 import { InstitucionService } from '../../services/institucion.service';
 import { DependenciaService } from '../../services/dependencia.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 import { FormControl, FormGroup, FormArray, Validators, FormBuilder } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router'
@@ -46,10 +47,18 @@ export class CiclosComponent implements OnInit {
     private fb: FormBuilder,
     
     private dependenciaService:DependenciaService,
-    private institucionService:InstitucionService ){   
+    private institucionService:InstitucionService, 
+    private usuarioService:UsuarioService ){ 
     
-      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
-    
+      usuarioService.chekUser().subscribe(inf=>{        
+        if(inf.auth){
+          this.userActive = inf.user.nombre
+        }else{
+          console.log('no hay un usuario activo')
+          this.userActive= ''
+        }
+      })
+        
       activatedRoute.params.subscribe(params=>{
 
         this.dependenciaService.getDependencia(params['id_dependecia']).subscribe((res:any)=>{        

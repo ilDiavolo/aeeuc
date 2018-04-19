@@ -37,12 +37,22 @@ export class NavbarComponent implements OnInit {
     private usuarioService:UsuarioService, 
     private router:Router,
     private fb:FormBuilder ) { 
-     
-    if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
-     
+    
+      usuarioService.chekUser().subscribe(inf=>{
+        
+        if(inf.auth){
+          this.userActive = inf.user.nombre
+        }else{
+          console.log('no hay un usuario activo')
+          this.userActive= ''
+        }
+      })
+      
   }
 
   ngOnInit() {
+
+    // NOTA: EN PRODUCCION DEBO AGREAR ESTE PATH AL INICIO '/aeeuc'
         
     let estoy_en:any = location.pathname
     estoy_en = estoy_en.split('/')    
@@ -52,46 +62,43 @@ export class NavbarComponent implements OnInit {
         
     if (!vengo_de) {
       // localStorage.setItem('site','/home')
-      sessionStorage.setItem('site','/aeeuc/home')
-      vengo_de = '/aeeuc/home'
+      sessionStorage.setItem('site','/home')
+      vengo_de = '/home'
     }   
     
     vengo_de = vengo_de.split('/')    
 
-    if( (estoy_en[2]!=="lbe") && (estoy_en[2]!=="acerca-de") && 
-        (estoy_en[2]!=="home") && (estoy_en[2]!=="admin") ){
+    if( (estoy_en[1]!=="lbe") && (estoy_en[1]!=="acerca-de") && 
+        (estoy_en[1]!=="home") && (estoy_en[1]!=="admin") ){
 
-      if (estoy_en[2]) {
+      if (estoy_en[1]) {
 
-        this.site = estoy_en[2]
+        this.site = estoy_en[1]
         this.site = '/'+this.site
       
-        if (estoy_en[3]) {
-          this.id_lv1 = estoy_en[3]
+        if (estoy_en[2]) {
+          this.id_lv1 = estoy_en[2]
   
-          if (estoy_en[4]) {
-            this.id_lv2 = estoy_en[4]
-
+          if (estoy_en[3]) {
+            this.id_lv2 = estoy_en[3]
           }
         }
       }
-
-      // localStorage.setItem('site', location.pathname)
+      
       sessionStorage.setItem('site', location.pathname)
 
     }else{
 
-      if (vengo_de[2]) {
+      if (vengo_de[1]) {
 
-        this.site = vengo_de[2]
+        this.site = vengo_de[1]
         this.site = '/'+this.site
       
-        if (vengo_de[3]) {
-          this.id_lv1 = vengo_de[3]
+        if (vengo_de[2]) {
+          this.id_lv1 = vengo_de[2]
   
-          if (vengo_de[4]) {
-            this.id_lv2 = vengo_de[4]
-
+          if (vengo_de[3]) {
+            this.id_lv2 = vengo_de[3]
           }
         }
       }
@@ -101,6 +108,8 @@ export class NavbarComponent implements OnInit {
   }
 
   pop(){
+
+    
     console.log(this.userActive)
     if(this.popover.isOpen()){
       this.popover.close()
@@ -116,7 +125,8 @@ export class NavbarComponent implements OnInit {
 
 
   login(){
-    // console.log( this.form_login.value.email )
+    this.loading = true
+    
     let email = this.form_login.value.email
     let pass = this.form_login.value.pass
     
@@ -127,13 +137,12 @@ export class NavbarComponent implements OnInit {
         this.userActive = result.nombre
         this.enviarUserActive.emit(this.userActive)
 
-        sessionStorage.setItem('session', this.userActive )       
-
         this.popover.close()
       } else {
         this.error = result
       }
     })
+    this.loading = false
 
   }
 
@@ -141,14 +150,13 @@ export class NavbarComponent implements OnInit {
     
     this.userActive = ''
     this.enviarUserActive.emit(this.userActive)
-    sessionStorage.removeItem('session')
+    sessionStorage.removeItem('token')
 
     let estoy_en:any = location.pathname
     estoy_en = estoy_en.split('/')
 
-    if( (estoy_en[2]==='admin') || (estoy_en[2]==='ciclos') || 
-        (estoy_en[2]==='plan') || (estoy_en[2]==='censo') ){
-
+    if( (estoy_en[1]==='admin') || (estoy_en[1]==='ciclos') || 
+        (estoy_en[1]==='plan') || (estoy_en[1]==='censo') ){
 
           this.router.navigate(['/home'])
     }

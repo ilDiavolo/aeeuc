@@ -17,7 +17,7 @@ export class UsuarioService {
   url_dev = 'http://localhost:5000'
 
   constructor( private httpClient:HttpClient ) { 
-    this.url=this.url_prd
+    this.url=this.url_dev
   }
 
   login(email:string, password:string): Observable<any>{
@@ -54,7 +54,7 @@ export class UsuarioService {
 
   public getAllUser(): Observable<any>{
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
     return this.httpClient.get<any>(this.url+'/usuarios/', { headers })
     .catch(e=>{
       return Observable.of(e)
@@ -62,10 +62,19 @@ export class UsuarioService {
   }
  
 
-  public accessValid(username:string): Observable<Boolean>{
+  public accessValid(): Observable<any>{
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
-    return this.httpClient.get<boolean>(this.url+'/auth/'+username, {headers})
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
+    return this.httpClient.get(this.url+'/auth', {headers})
+    .catch(e=>{
+      return Observable.of(e)
+    })
+  }
+
+  public chekUser(): Observable<any>{
+
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
+    return this.httpClient.get(this.url+'/checkUser', { headers })
     .catch(e=>{
       return Observable.of(e)
     })
@@ -73,15 +82,16 @@ export class UsuarioService {
 
   public getUserById(userId:string): Observable<Usuario>{
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
     return this.httpClient.get(this.url+'/usuario_id/'+userId, { headers })
     .catch(e=>{
       return Observable.of(e)
     })
   }
+
   public getUser(email:string): Observable<Usuario>{
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
     return this.httpClient.get(this.url+'/usuario/'+email, { headers })
     .catch(e=>{
       return Observable.of(e)
@@ -94,7 +104,7 @@ export class UsuarioService {
 
   public createUser(usuario:Usuario): Observable<any> {
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
     return this.httpClient.post(this.url+'/usuario', usuario,{headers})
     .catch(e=>{
       return Observable.of(e)
@@ -106,7 +116,7 @@ export class UsuarioService {
 
   public updateUser(usuario:Usuario){
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
     return this.httpClient.put(this.url+'/usuario', usuario, {headers})
     .catch(e=>{
       return Observable.of(e)
@@ -115,7 +125,7 @@ export class UsuarioService {
 
   public updatePass(usuario:Usuario){
 
-    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token') })
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer '+sessionStorage.getItem('token') })
     return this.httpClient.put(this.url+'/acutalizarPass', usuario, {headers})
     .catch(e=>{
       return Observable.of(e)
@@ -126,7 +136,7 @@ export class UsuarioService {
   // ------------------------------------------------------------------------------------------------------
 
   public deleteUser(usuario:Usuario){
-    let headers = new HttpHeaders().set('Authorization', 'Bearer '+localStorage.getItem('token'))
+    let headers = new HttpHeaders().set('Authorization', 'Bearer '+sessionStorage.getItem('token'))
     return this.httpClient.delete(this.url+'/usuario/'+usuario._id, { headers})
     .catch(e=>{
       return Observable.of(e)

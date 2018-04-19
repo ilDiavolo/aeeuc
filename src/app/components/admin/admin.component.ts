@@ -30,7 +30,16 @@ export class AdminComponent implements OnInit {
     private fb:FormBuilder,
     private usuarioService:UsuarioService, 
     private modalService: NgbModal) { 
-      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
+
+      usuarioService.chekUser().subscribe(inf=>{        
+        if(inf.auth){
+          this.userActive = inf.user.nombre
+        }else{
+          console.log('no hay un usuario activo')
+          this.userActive= ''
+        }
+      })
+ 
     }
 
   ngOnInit() {

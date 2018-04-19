@@ -11,15 +11,23 @@
             
             <!-- HEADER CONTENIDO BASICO -->
 
-            <div class="row fast fadeIn text-light" style="background-color: #5a5a5a; " > 
+            <div class="row fast fadeIn text-light" style="background-color: #263238; " > 
 
                 <!-- <div class="col-3 bg-secondary"></div> -->
-                <div class=" col-12 p-3 text-center "  >
-                    <h1 class="m-0 mt-2" > {{ institucion_activa.nombre }} </h1>
-                    <span class="d-inline-flex">
-                        <p class="lead mx-3"> {{ institucion_activa.tipo }} </p>
-                        <p class="lead mx-3"> {{ institucion_activa.rif }} </p>
-                    </span>
+                <div class=" col-12 pt-2 text-center position-relative"  >
+                    <h1 class="m-0 universidad-carabobo" > {{ institucion_activa.nombre }} </h1>
+                    
+                    <p class="mb-2">{{ institucion_activa.tipo }} <span class="text-muted">|</span> {{ institucion_activa.rif }} </p>
+                    
+                    <h5 class="mb-0 text-primary">Línea Base Energética: 
+                        <span class="text-info">{{ lbe_total | number:'1.0-2'}} <small class="">kWh<span class="text-secondary">/</span>m<sup>2</sup></small></span> </h5>
+                    
+
+                    <div class="d-flex justify-content-center ">
+                        <p class="m-0"> <strong>Área Útil:</strong> <span class="text-success" >{{ area_util_total }} m<sup>2</sup></span> </p>                        
+                        <p class="mx-2 "><strong>Área Bruta:</strong> <span class="text-success">{{ area_brutal_total }} m<sup>2</sup></span></p>
+                    </div> 
+
                 </div>
             </div>
 
@@ -29,16 +37,16 @@
                 <!-- SIDEBAR: DEPENDENCIAS -->
                 <div class="col-3 fast fadeIn border-right   py-4 px-0"  style="background-color: whitesmoke;" >
                     <div class="px-4" >
-                        <h3 class="text-center " >Dependencias</h3>
+                        <h3 class="text-center mt-4" >Dependencias</h3>
                         <hr class="mt-0 px">
                     </div>
                     <div class="list-group">
-                        <a  *ngFor="let dependence of lista_dependencias"                             
-                            (click)="verDependencia(dependence._id)"           
+                        <a  *ngFor="let dependence of lista_dependencias"                           
+                            (click)="verDependencia(dependence._id)" 
+                            [ngClass]="{'selected-dep': dependence.nombre===dependencia_activa.nombre }"
                             class=" list-group-item border-right-0 border-left-0 dep bg-light 
-                                    list-group-item-action 
-                                    
-                                    rounded-0 cursor"> <i class="fas fa-caret-right"></i> {{dependence.nombre}}
+                                    list-group-item-action  rounded-0 cursor">
+                                     <i  class="fas fa-caret-right"></i> {{dependence.nombre}}
                         </a>
                        
                         <a  *ngIf="userActive"
@@ -47,7 +55,7 @@
                             class=" list-group-item cursor border-right-0 border-left-0
                                     rounded-0 
                                     text-center                                  
-
+                        
                                     text-info
                                     list-group-item-action"> <i class="fas fa-plus    "></i>  Agregar Dependencia </a>
                     </div>                   
@@ -58,7 +66,7 @@
                 <div class="col-9 pt-4 px-0 animated fadeIn">
 
                     <div class=" px-4" >
-                        <h3 class="text-center lighter h1"> {{ dependencia_activa.nombre }} </h3>
+                        <h3 class="text-center lighter mt-3 h1"> {{ dependencia_activa.nombre }} </h3>
                         <br>
                         <nav aria-label="breadcrumb" class=" d-flex justify-content-center align-items-baseline">
                             <ol class="breadcrumb p-0   bg-transparent ">
@@ -91,7 +99,7 @@
                         
                         <div class="d-flex  px-5 mb-2 "  >
                             <p class="invisible">A</p>
-                            <p class=" m-0 ml-auto d-flex cursor align-items-center animated fadeIn" *ngIf="editar_factura">
+                            <p class=" m-0 ml-auto d-flex cursor align-items-center animated fadeIn" *ngIf="editar_factura && userActive">
                                 <button 
                                     (click)="open_agregar_factura(addfacturaTeplate)"
                                     type="button" class=" btn  btn-outline-info rounded-0" >Agregar Factura</button>
@@ -126,7 +134,7 @@
                                         <td>{{ factura.numero_factura }}</td>
                                        
                                         <td class="px-0 cursor" >
-                                            <div *ngIf="editar_factura" 
+                                            <div *ngIf="editar_factura && userActive" 
                                                 (click)="open_confirm_delete_factura(confirmDeleteFactura,i)"
                                                 class="animated fadeIn p-0" >
                                                 <i class="fas fa-times drop"></i>
@@ -425,6 +433,8 @@
                 Manuel Pinto <i class="far fa-copyright"></i> 2018
             </p> 
         </footer>
+
+
     </div>        
 </div>
 
@@ -611,7 +621,7 @@
 <ng-template #confirmDeleteFactura let-c="close" let-d="dismiss">
 
     <div class="modal-header py-2">
-        <h4 class="modal-title lead">Mensaje de confirmación</h4>
+        <h4 class="modal-title lead">Mensaje de confirmación <i class="fas fa-exclamation-circle text-secondary  "></i></h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
         </button>
@@ -619,8 +629,10 @@
     <div class="modal-body py-3">
         <div class="d-flex justify-content-end">
             <div>
-                <button type="button" (click)="d('Cross click')" class=" ">CANCELAR</button>
-                <button type="submit" (click)="eliminarFactura()" class=" ">ELIMINAR FACTURA</button>
+                <button type="button" (click)="d('Cross click')" 
+                    class="btn btn-sm btn-outline-secondary rounded-0">CANCELAR</button>
+                <button type="submit" (click)="eliminarFactura()" 
+                    class="btn btn-sm btn-outline-danger rounded-0 ">ELIMINAR FACTURA</button>
             </div>
         </div>     
     </div>
@@ -630,20 +642,22 @@
 <ng-template #confirmDeleteDependencia let-c="close" let-d="dismiss">
 
     <div class="modal-header py-2">
-        <h4 class="modal-title lead">Mensaje de confirmación</h4>
+        <h4 class="modal-title lead">Mensaje de confirmación <i class="fas fa-exclamation-circle text-secondary  "></i> </h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body py-3">
-        <div> Estás a punto de 
+        <!-- <div class="text-muted lighter h5"> Estás a punto de 
             <strong class="text-danger" >Eliminar</strong>
-             esta dependencia, estas seguro de hacerlo ?
-        </div>
+             esta Dependencia, estas seguro de hacerlo ?
+        </div> -->
         <div class="d-flex justify-content-end">
             <div>
-                <button type="button" (click)="d('Cross click')" class=" ">CANCELAR</button>
-                <button type="submit" (click)="eliminarDependencia()" class=" ">ELIMINAR DEPENDENCIA</button>
+                <button type="button" (click)="d('Cross click')" 
+                    class="btn btn-sm btn-outline-secondary rounded-0">CANCELAR</button>
+                <button type="submit" (click)="eliminarDependencia()" 
+                    class="btn btn-sm btn-outline-danger rounded-0 ">ELIMINAR DEPENDENCIA</button>
             </div>
         </div>     
     </div>

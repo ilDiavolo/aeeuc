@@ -16,7 +16,7 @@ export class InstitucionService {
   url_dev = 'http://localhost:5000'
 
   constructor( private httpClient:HttpClient ) { 
-    this.url=this.url_prd
+    this.url=this.url_dev
   }
 
 

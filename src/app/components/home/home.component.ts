@@ -10,6 +10,7 @@ import { Institucion } from '../../classes/institucion';
 
 import { InstitucionService } from '../../services/institucion.service';
 import { DependenciaService } from '../../services/dependencia.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 
 @Component({
@@ -38,9 +39,17 @@ export class HomeComponent implements OnInit {
     private modalService: NgbModal, 
     private fb: FormBuilder, 
     private institucionService:InstitucionService, 
-    private dependenciaService:DependenciaService ){ 
+    private dependenciaService:DependenciaService,
+    private usuarioService:UsuarioService ){  
 
-      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
+      usuarioService.chekUser().subscribe(inf=>{        
+        if(inf.auth){
+          this.userActive = inf.user.nombre
+        }else{
+          console.log('no hay un usuario activo')
+          this.userActive= ''
+        }
+      })
       
       this.formInstitucion = fb.group({        
         nombre:       ['', Validators.required],

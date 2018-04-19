@@ -23,7 +23,7 @@
                 </li>
                
 
-                <li class="nav-item" routerLinkActive="active">
+                <li class="nav-item here" routerLinkActive="active">
                     <a class="nav-link" [routerLink]="['/lbe']">Lbe</a>
                 </li>
                 <li class="nav-item" routerLinkActive="active">
@@ -33,22 +33,22 @@
             </ul>
 
           
-            <span *ngIf="userActive" class="text-white" > 
-                {{userActive}} / 
-                <span class="close-session" (click)="closeSession()" > Cerrar Sesión </span> 
+            <span *ngIf="userActive" class="text-white  h6 m-0" > 
+                {{userActive}} <span class="text-muted">/</span>
+                <span class="close-session " (click)="closeSession()" > Cerrar Sesión </span> 
                 <span title="Administar Usuarios" [routerLink]="['/admin']"><i routerLinkActive="active" class=" ml-1 fas fa-cog cursor"  ></i></span> 
             </span>
             
             
             <a  *ngIf="!userActive"  
-                class="text-white mr-5 cursor" 
+                class="text-white mr-5 cursor h6 m-0" 
                 [ngbPopover]="popContent" 
                 #p="ngbPopover"  
                 triggers="manual"
                 (click)="pop()"               
                 placement="bottom">
                 
-            iniciar sesión</a>
+            Iniciar Sesión</a>
            
         </div>
     </div>
@@ -56,26 +56,25 @@
 
 
             
-<ng-template #popContent>
+<ng-template #popContent >
 
     <form (ngSubmit)="login()" [formGroup]="form_login" ngNativeValidate >
 
         <div class="form-group">
         <label for="inputUsuario">Email</label>
-        <input type="email" formControlName="email" class="form-control" 
+        <input type="email" formControlName="email" class="form-control rounded-0" 
                 placeholder="Correo" required>
         <!-- <small id="userlHelp" class="form-text text-muted">Solo usuarios del dominio.</small> -->
         </div>
     
         <div class="form-group">
         <label for="inputPass">Password</label>
-        <input type="password" formControlName="pass" class="form-control" 
+        <input type="password" formControlName="pass" class="form-control rounded-0"  
                 placeholder="Contraseña" required>
         </div>
 
         <div class="form-group">
-            <!-- <button [disabled]="loading" class="btn btn-primary" > Login </button> -->
-            <button class="btn btn-primary" > Login </button>
+            <button [disabled]="loading" class="btn btn-primary " > Login </button>
         </div>
 
         <div *ngIf="error" class="alert alert-danger" > {{error}} </div>

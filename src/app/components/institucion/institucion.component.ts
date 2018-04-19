@@ -9,6 +9,7 @@ import { Factura } from '../../classes/factura';
 import { DependenciaService } from '../../services/dependencia.service';
 import { InstitucionService } from '../../services/institucion.service';
 import { FacturadoService } from '../../services/facturado.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
@@ -28,6 +29,9 @@ export class InstitucionComponent implements OnInit {
 
 
   lista_dependencias:Dependencia[]=[]
+  area_util_total=0
+  area_brutal_total=0
+  lbe_total=0
 
   // formgroup nueva dependencia
   fomulario_nueva_dependencia: FormGroup
@@ -61,7 +65,7 @@ export class InstitucionComponent implements OnInit {
 
   editar_factura:boolean=false
   pos = -1
-
+  
   total_cargas_conectadas=0
   total_wh_por_semanas=0
   
@@ -84,9 +88,17 @@ export class InstitucionComponent implements OnInit {
     private fb: FormBuilder,
     private dependenciaService:DependenciaService,
     private institucionService:InstitucionService,
-    private facturadoService:FacturadoService ){
+    private facturadoService:FacturadoService,
+    private usuarioService:UsuarioService ){
 
-      if(sessionStorage.getItem('session')) { this.userActive = sessionStorage.getItem('session')}
+      usuarioService.chekUser().subscribe(inf=>{        
+        if(inf.auth){
+          this.userActive = inf.user.nombre
+        }else{
+          console.log('no hay un usuario activo')
+          this.userActive= ''
+        }
+      })
   }
 
   ngOnInit() {
@@ -99,6 +111,27 @@ export class InstitucionComponent implements OnInit {
 
       this.dependenciaService.allDependencia(params['id_institucion']).subscribe((res:any)=>{
         this.lista_dependencias = res.data
+
+        // ==============================================================
+        let util=0, bruta=0, lbe
+        this.lista_dependencias.forEach(element => {
+
+          this.area_util_total = this.area_util_total+element.area_util
+          this.area_brutal_total = this.area_brutal_total+ element.area_bruta
+
+          lbe=0
+          element.censo.forEach(carga=>{            
+            lbe = ( carga.numero * carga.fd * carga.horasDia * carga.diaSemana * carga.potencia) + lbe                    
+          })
+
+          lbe = ( lbe * 4.3)/1000
+
+          this.lbe_total = this.lbe_total + lbe
+
+        });
+
+        // ==============================================================
+
 
         if(params['id_dependecia']){
           // console.log('entre desde censo')
@@ -132,7 +165,7 @@ export class InstitucionComponent implements OnInit {
   }
 
   // ================================================================================
-  
+ 
   verDependencia(id:string){
     this.dependenciaService.getDependencia(id).subscribe((res:any)=>{
       this.dependencia_activa = res.data
@@ -357,6 +390,5 @@ export class InstitucionComponent implements OnInit {
     this.userActive = useractive
   }
   
-
 
 }

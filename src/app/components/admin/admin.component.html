@@ -13,8 +13,8 @@
                     <div class="col-12 d-flex mt-4 pb-3 align-items-center">
     
                         <div>
-                            <a routerLink class="routerLink h4" (click)="goBack()" > 
-                                <i class="fas fa-angle-left"></i> Regresar
+                            <a routerLink class="btn btn-outline-dark rounded-0 p-3" (click)="goBack()" > 
+                                <i class="fas fa-angle-left fa-2x" ></i>
                             </a>
                         </div>
                         
@@ -300,20 +300,22 @@
 <ng-template #confirmDeleteUser let-c="close" let-d="dismiss">
 
     <div class="modal-header py-2">
-        <h4 class="modal-title lead">Mensaje de confirmación</h4>
+        <h4 class="modal-title lead">Mensaje de confirmación <i class="fas fa-exclamation-circle text-secondary  "></i></h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body py-3">
-        <div class="pb-3"> Estás a punto de 
+        <div class="pb-3 text-muted lighter h5"> Estás a punto de 
             <strong class="text-danger" >Eliminar</strong>
                 esta usuario, estas seguro de hacerlo ?
         </div>
         <div class="d-flex justify-content-end">
             <div>
-                <button type="button" (click)="d('Cross click')" class=" ">CANCELAR</button>
-                <button type="button" (click)="eliminarUsuario()" class=" ">ELIMINAR USUARIO</button>
+                <button type="button" (click)="d('Cross click')" 
+                    class="btn btn-sm btn-outline-secondary rounded-0">CANCELAR</button>
+                <button type="button" (click)="eliminarUsuario()" 
+                    class="btn btn-sm btn-outline-danger rounded-0 ">ELIMINAR USUARIO</button>
             </div>
         </div>     
     </div>
